@@ -26,7 +26,23 @@ function partitionBooksByBorrowedStatus(books) {
     return sortedArray;
 }
 
-function getBorrowersForBook(book, accounts) {}
+function getBorrowersForBook(book, accounts) {
+    let transactions = [];
+    let borrowKeys = book.borrows;
+    for (let account in accounts) {
+        let accountId = accounts[account];
+        for (let key in borrowKeys) {
+            let keyId = borrowKeys[key];
+            if (keyId.id === accountId.id) {
+                accountId.returned = keyId.returned;
+                if (transactions.length < 10) {
+                    transactions.push(accountId);
+                }
+            }
+        }
+    }
+    return transactions;
+}
 
 module.exports = {
     findAuthorById,
