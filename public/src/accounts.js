@@ -10,7 +10,16 @@ function sortAccountsByLastName(accounts) {
     ); //ternary operator + sort() native arrow method
 }
 
-function getTotalNumberOfBorrows(account, books) {}
+function getTotalNumberOfBorrows(account, books) {
+    let total = 0;
+    for (let book in books) {
+        //let/in used
+        if (books[book].borrows.find((borrow) => borrow.id === account.id)) {
+            total++;
+        }
+    }
+    return total;
+}
 
 function getBooksPossessedByAccount(account, books, authors) {}
 
