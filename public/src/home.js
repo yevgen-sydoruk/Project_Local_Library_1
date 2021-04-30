@@ -1,4 +1,8 @@
-function getTotalBooksCount(books) {}
+function getTotalBooksCount(books) {
+    let count = 0;
+    books.map((book) => count++);
+    return count;
+}
 
 function getTotalAccountsCount(accounts) {}
 
@@ -11,10 +15,10 @@ function getMostPopularBooks(books) {}
 function getMostPopularAuthors(books, authors) {}
 
 module.exports = {
-  getTotalBooksCount,
-  getTotalAccountsCount,
-  getBooksBorrowedCount,
-  getMostCommonGenres,
-  getMostPopularBooks,
-  getMostPopularAuthors,
+    getTotalBooksCount,
+    getTotalAccountsCount,
+    getBooksBorrowedCount,
+    getMostCommonGenres,
+    getMostPopularBooks,
+    getMostPopularAuthors,
 };
