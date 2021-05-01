@@ -22,14 +22,13 @@ function getTotalNumberOfBorrows(account, books) {
 }
 
 function getBooksPossessedByAccount(account, books, authors) {
-    // console.log(account.id);
-    let booksWithAuthors = books.filter((book) =>
+    const booksWithAuthors = books.filter((book) =>
         book.borrows.find(
             (borrow) => borrow.id === account.id && borrow.returned === false
         )
     );
     for (let book in booksWithAuthors) {
-        let authorId = booksWithAuthors[book].authorId;
+        const authorId = booksWithAuthors[book].authorId;
 
         booksWithAuthors[book].author = authors.find(
             (author) => author.id === authorId

@@ -4,15 +4,15 @@ function sortItems(array) {
     return array;
 }
 
-function groupByKey(array, key) {
+function groupByKeyMapObj(array, key) {
     return array.reduce((acc, obj) => {
-        if (acc[obj[key]] === undefined) acc[obj[key]] = [];
-        acc[obj[key]].push(obj);
+        if (acc.get(obj[key]) === undefined) acc.set(obj[key], []);
+        acc.get(obj[key]).push(obj);
         return acc;
-    }, {});
+    }, new Map());
 }
 
-// HELPER FUNCTIONS
+// END of HELPER FUNCTIONS
 
 function getTotalBooksCount(books) {
     let count = 0;
@@ -30,7 +30,6 @@ function getBooksBorrowedCount(books) {
     let count = 0;
     for (let item in books) {
         let book = books[item];
-        console.log(book);
         if (book.borrows.find((borrow) => !borrow.returned)) {
             count++;
         }
@@ -40,11 +39,11 @@ function getBooksBorrowedCount(books) {
 
 function getMostCommonGenres(books) {
     let result = [];
-    const genres = groupByKey(books, "genre");
-    for (let genreName in genres) {
+    const genres = groupByKeyMapObj(books, "genre");
+    for (let [genreTitle, bookInfo] of genres) {
         result.push({
-            name: genreName,
-            count: genres[genreName].length,
+            name: genreTitle,
+            count: bookInfo.length,
         });
     }
     sortItems(result);
@@ -54,14 +53,14 @@ function getMostCommonGenres(books) {
 
 function getMostPopularBooks(books) {
     let result = [];
-    const booksName = groupByKey(books, "title");
-    for (let book in booksName) {
+    const booksName = groupByKeyMapObj(books, "title");
+    for (let [bookTitle, bookInfo] of booksName) {
+        let countedNum = bookInfo.map((book) => book.borrows.length);
         result.push({
-            name: book,
-            count: booksName[book][0].borrows.length,
+            name: bookTitle,
+            count: countedNum[0],
         });
     }
-
     sortItems(result);
     result.splice(5);
     return result;
@@ -69,18 +68,22 @@ function getMostPopularBooks(books) {
 
 function getMostPopularAuthors(books, authors) {
     let result = [];
-    const booksName = groupByKey(books, "authorId");
-    console.log(booksName);
-    for (let book in booksName) {
+    const booksName = groupByKeyMapObj(books, "authorId");
+    for (let [authorId, authorBooks] of booksName) {
+        let countedNum = authorBooks
+            .map((borrow) => borrow.borrows.length)
+            .reduce((a, b) => a + b, 0);
+        const author = authors.find((author) => author.id === authorId);
+        let name = author.name.first + " " + author.name.last;
+
         result.push({
-            name: book,
-            count: booksName[book][0].borrows.length,
+            name: name,
+            count: countedNum,
         });
     }
-
     sortItems(result);
     result.splice(5);
-    // return result;
+    return result;
 }
 
 module.exports = {

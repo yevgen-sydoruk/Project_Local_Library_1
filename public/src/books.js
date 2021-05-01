@@ -11,7 +11,6 @@ function partitionBooksByBorrowedStatus(books) {
     let returnedBooks = [];
     let sortedArray = [];
     books.filter((book) => {
-        // console.log(book);
         let isBorrowed = book.borrows;
 
         isBorrowed.find((status) =>
@@ -22,13 +21,12 @@ function partitionBooksByBorrowedStatus(books) {
     });
     sortedArray.push(borrowedBooks);
     sortedArray.push(returnedBooks);
-    // console.log(sortedArray);
     return sortedArray;
 }
 
 function getBorrowersForBook(book, accounts) {
     let transactions = [];
-    let borrowKeys = book.borrows;
+    const borrowKeys = book.borrows;
     for (let account in accounts) {
         let accountId = accounts[account];
         for (let key in borrowKeys) {
